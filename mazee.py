@@ -2,7 +2,7 @@ import pygame
 import random
 import os
 from player import Player
-#from monster import Monster
+from monster import Monster
 from wall import Wall
 
 os.environ['SDL_VIDEO_CENTERED'] = '1'
@@ -29,46 +29,11 @@ clock = pygame.time.Clock()
 #Load game images
 background = pygame.image.load('Images/path.png')
 playerImg = pygame.image.load('Images/player.png')
-monsterImg = pygame.image.load('Images/monster.png')
-#wallImg = pygame.image.load('Images/hedge.png')
 finishImg = pygame.image.load('Images/gate.png')
 lifeImg = pygame.image.load('Images/life.png')
 
 #Set the icon (image on top left of game window)
 pygame.display.set_icon(playerImg)
-
-class Monster(object):
-    def __init__(self, pos):
-        self.rect = pygame.Rect(pos[0], pos[1]+32, 32, 32)
-        self.image = monsterImg
-        self.dist = 3
-        self.direction = random.randint(0, 3) #Random direction
-        self.steps = random.randint(3, 9) * 32 #Random no of steps to take before changing direction
-
-    def move(self):
-        direction_list = ((-1,0), (1,0), (0,-1), (0,1))
-        dx, dy = direction_list[self.direction]
-        self.rect.x += dx
-        self.rect.y += dy
-
-        collide = False
-        for wall in walls:
-            if self.rect.colliderect(wall.rect):
-                collide = True
-                if dx > 0:
-                    self.rect.right = wall.rect.left
-                if dx < 0:
-                    self.rect.left = wall.rect.right
-                if dy > 0:
-                    self.rect.bottom = wall.rect.top
-                if dy < 0:
-                    self.rect.top = wall.rect.bottom
-
-        self.steps -= 1
-        if collide or self.steps == 0:
-            #New random direction and no of steps
-            self.direction = random.randint(0, 3)
-            self.steps = random.randint(3, 9) * 32
 
 #Class for end rect
 class Finish(object):
@@ -393,7 +358,7 @@ def game_loop():
             
         #Move monster
         for monster in monsters:
-            monster.move()
+            monster.move(walls)
 
         #Moving to next level/win
         for player in players:
