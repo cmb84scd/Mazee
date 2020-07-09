@@ -1,9 +1,9 @@
 import pygame
-import random
 import os
 from player import Player
 from monster import Monster
 from wall import Wall
+from finish import Finish
 
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 #Initalise pygame
@@ -29,17 +29,10 @@ clock = pygame.time.Clock()
 #Load game images
 background = pygame.image.load('Images/path.png')
 playerImg = pygame.image.load('Images/player.png')
-finishImg = pygame.image.load('Images/gate.png')
 lifeImg = pygame.image.load('Images/life.png')
 
 #Set the icon (image on top left of game window)
 pygame.display.set_icon(playerImg)
-
-#Class for end rect
-class Finish(object):
-    def __init__(self, pos):
-        self.rect = pygame.Rect(pos[0], pos[1]+32, 32, 32)
-        self.image = finishImg
 
 #Variables
 currentLevel = 0
