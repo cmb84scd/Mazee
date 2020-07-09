@@ -1,7 +1,9 @@
 import pygame
-import random
 import os
 from player import Player
+from monster import Monster
+from wall import Wall
+from finish import Finish
 
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 #Initalise pygame
@@ -12,7 +14,6 @@ black = (0,0,0)
 blue = (0,0,255)
 green = (0,200,0)
 red = (255,0,0)
-orange = (255,200,0)
 bright_green = (0,255,0)
 light_blue = (170,180,255)
 white = (255,255,255)
@@ -27,59 +28,10 @@ clock = pygame.time.Clock()
 #Load game images
 background = pygame.image.load('Images/path.png')
 playerImg = pygame.image.load('Images/player.png')
-monsterImg = pygame.image.load('Images/monster.png')
-wallImg = pygame.image.load('Images/hedge.png')
-finishImg = pygame.image.load('Images/gate.png')
 lifeImg = pygame.image.load('Images/life.png')
 
 #Set the icon (image on top left of game window)
 pygame.display.set_icon(playerImg)
-
-#Class for the monster rect
-class Monster(object):
-    def __init__(self, pos):
-        self.rect = pygame.Rect(pos[0], pos[1]+32, 32, 32)
-        self.image = monsterImg
-        self.dist = 3
-        self.direction = random.randint(0, 3) #Random direction
-        self.steps = random.randint(3, 9) * 32 #Random no of steps to take before changing direction
-
-    def move(self):
-        direction_list = ((-1,0), (1,0), (0,-1), (0,1))
-        dx, dy = direction_list[self.direction]
-        self.rect.x += dx
-        self.rect.y += dy
-
-        collide = False
-        for wall in walls:
-            if self.rect.colliderect(wall.rect):
-                collide = True
-                if dx > 0:
-                    self.rect.right = wall.rect.left
-                if dx < 0:
-                    self.rect.left = wall.rect.right
-                if dy > 0:
-                    self.rect.bottom = wall.rect.top
-                if dy < 0:
-                    self.rect.top = wall.rect.bottom
-
-        self.steps -= 1
-        if collide or self.steps == 0:
-            #New random direction and no of steps
-            self.direction = random.randint(0, 3)
-            self.steps = random.randint(3, 9) * 32
-                
-#Class for the wall rect
-class Wall(object):
-    def __init__(self, pos):
-        self.rect = pygame.Rect(pos[0], pos[1]+32, 32, 32)
-        self.image = wallImg
-
-#Class for end rect
-class Finish(object):
-    def __init__(self, pos):
-        self.rect = pygame.Rect(pos[0], pos[1]+32, 32, 32)
-        self.image = finishImg
 
 #Variables
 currentLevel = 0
@@ -381,16 +333,16 @@ def game_loop():
         #Move the player if an arrow key is pressed
         key = pygame.key.get_pressed()
         if key[pygame.K_LEFT]:
-            player.move(-2, 0)
+            player.move(-2, 0, walls)
             player.image = pygame.transform.flip(playerImg, True, False)
         if key[pygame.K_RIGHT]:
-            player.move(2, 0)
+            player.move(2, 0, walls)
             player.image = playerImg
         if key[pygame.K_UP]:
-            player.move(0, -2)
+            player.move(0, -2, walls)
             player.image = pygame.transform.rotate(playerImg, 90)
         if key[pygame.K_DOWN]:
-            player.move(0, 2)
+            player.move(0, 2, walls)
             player.image = pygame.transform.rotate(playerImg, -90)
         if key[pygame.K_p]:
             pause = True
@@ -398,7 +350,7 @@ def game_loop():
             
         #Move monster
         for monster in monsters:
-            monster.move()
+            monster.move(walls)
 
         #Moving to next level/win
         for player in players:
@@ -427,16 +379,12 @@ def game_loop():
         #Draw the scene
         screen.blit(background, (0,32))
         for wall in walls:
-            #pygame.draw.rect(screen, green, wall.rect)
             screen.blit(wall.image, wall.rect)
         for player in players:
-            #pygame.draw.rect(screen, orange, player.rect)
             screen.blit(player.image, player.rect)
         for monster in monsters:
-            #pygame.draw.rect(screen, bright_green, monster.rect)
             screen.blit(monster.image, monster.rect)
         for finish in finishes:
-            #pygame.draw.rect(screen, red, finish.rect)
             screen.blit(finish.image, finish.rect)
         life_dis(screen,500,0,lives,lifeImg)
         pygame.display.update()
