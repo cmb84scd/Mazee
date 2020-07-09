@@ -11,7 +11,7 @@ class Monster(object):
         self.direction = random.randint(0, 3) #Random direction
         self.steps = random.randint(3, 9) * 32 #Random no of steps to take before changing direction
 
-    def move(self):
+    def move(self, walls):
         direction_list = ((-1,0), (1,0), (0,-1), (0,1))
         dx, dy = direction_list[self.direction]
         self.rect.x += dx

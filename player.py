@@ -7,14 +7,14 @@ class Player(object):
         self.rect = pygame.Rect(pos[0], pos[1]+32, 32, 32) #x-axis, y-axis, width, height
         self.image = playerImg
 
-    def move(self, dx, dy):
+    def move(self, dx, dy, walls):
         #Move each axis separately. NB this checks for collisions both times
         if dx != 0:
-            self.move_single_axis(dx, 0)
+            self.move_single_axis(dx, 0, walls)
         if dy != 0:
-            self.move_single_axis(0, dy)
+            self.move_single_axis(0, dy, walls)
 
-    def move_single_axis(self, dx, dy):
+    def move_single_axis(self, dx, dy, walls):
         #Move the rect
         self.rect.x += dx
         self.rect.y += dy
