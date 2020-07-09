@@ -14,7 +14,6 @@ black = (0,0,0)
 blue = (0,0,255)
 green = (0,200,0)
 red = (255,0,0)
-orange = (255,200,0)
 bright_green = (0,255,0)
 light_blue = (170,180,255)
 white = (255,255,255)
@@ -380,16 +379,12 @@ def game_loop():
         #Draw the scene
         screen.blit(background, (0,32))
         for wall in walls:
-            #pygame.draw.rect(screen, green, wall.rect)
             screen.blit(wall.image, wall.rect)
         for player in players:
-            #pygame.draw.rect(screen, orange, player.rect)
             screen.blit(player.image, player.rect)
         for monster in monsters:
-            #pygame.draw.rect(screen, bright_green, monster.rect)
             screen.blit(monster.image, monster.rect)
         for finish in finishes:
-            #pygame.draw.rect(screen, red, finish.rect)
             screen.blit(finish.image, finish.rect)
         life_dis(screen,500,0,lives,lifeImg)
         pygame.display.update()
