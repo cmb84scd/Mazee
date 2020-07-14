@@ -3,7 +3,7 @@ A maze game that I created while learning Python and pygame. It has 6 levels and
 
 ## How to use
 - Clone this repo
-- Install [Python](https://www.python.org/)
+- Install [Python 3](https://www.python.org/)
 - Install [pygame](https://www.pygame.org/wiki/GettingStarted)
 - Open mazee.py and run
 
